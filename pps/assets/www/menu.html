@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<title>Mobilepps</title>
+<meta name="description" content="">
+<meta name="author" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="js/jquery/jquery.mobile-1.2.0.css"/>
+<script type="text/javascript" src="js/jquery/jquery-1.8.3.min.js"></script>
+<script	type="text/javascript" src="js/jquery/jquery.mobile-1.2.0.min.js"></script>
+<script type="text/javascript" src="js/jquery/jqm.page.params.js"></script>
+<script type="text/javascript" src="cordova-2.3.0.js"></script>
+
+<script type="text/javascript">
+	$(document).bind("pagebeforechange", function( event, data ) {
+    $.mobile.pageData = (data && data.options && data.options.pageData)
+        ? data.options.pageData
+        : null;
+});
+</script>
+</head>
+<body>
+	<div id="menu-list" data-role="page" data-theme="b">
+		<div data-role="header" data-theme="a">
+			<h3>Sistema de Gestión de Pacientes</h3>
+		</div>
+		<div data-role="content">
+			<h2>Bienvenido mo2013</h2>
+			<ul data-role="listview" data-inset="true" data-theme="c"
+				data-dividertheme="b">
+				<li data-role="list-divider" role="heading">Menú</li>
+				<li><a href="#form-input">Nuevo Paciente</a></li>
+				<li><a href="#form-query">Buscar Paciente</a></li>
+				<li><a href="#stats">Estadisticas</a></li>
+				<li><a href="#" onclick="javascript:syncData2Web();">Sincronizar con MobilePPS</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="form-query" data-role="page" data-theme="b">
+      <div data-role="header" data-theme="a" data-position="fixed"
+      data-id="topbar">
+        <a data-role="button" data-icon="home" data-theme="b"
+        data-iconpos="notext" data-direction="reverse" href="#menu-list" title="home"></a>
+        <h3>Buscar Paciente</h3>
+      </div>
+      <div data-role="content">
+        <h2>Bienvenido mo2013</h2>
+        <h3 id="messages-header">Ingresa un Nombre o Apellido</h3>
+        <form id="queryForm" role="search" data-theme="a"
+        class="ui-listview-filter ui-bar-c"></form>
+          <ul id="patient-list" data-role="listview" data-filter="true"
+          data-theme="c" data-split-icon="delete" data-split-theme="d"
+          class="ui-listview">
+          </ul>
+      </div>
+      <div data-role="footer" data-theme="a" data-position="fixed"
+      data-id="menu">
+        <div data-role="navbar" role="navigation" data-iconpos="top">
+          <ul class="ui-grid-b">
+            <li class="ui-block-a"><a href="#form-input" data-icon="plus"
+            data-corners="false" data-shadow="false" data-iconshadow="true"
+            data-wrapperels="span" data-iconpos="top" data-theme="a"
+            data-inline="true">Nuevo Paciente</a></li>
+            <li class="ui-block-b"><a href="#form-query"
+            data-icon="search" data-corners="false" data-shadow="false"
+            data-iconshadow="true" data-wrapperels="span" data-iconpos="top"
+            data-theme="a" data-inline="true" class="ui-btn-active ui-state-persist">Buscar Paciente</a></li>
+            <li class="ui-block-c"><a href="#stats" data-icon="info"
+            data-corners="false" data-shadow="false" data-iconshadow="true"
+            data-wrapperels="span" data-iconpos="top" data-theme="a"
+            data-inline="true">Estadísticas</a></li>
+          </ul>
+        </div>
+      </div>
+          <script type="text/javascript" src="js/form-query.js"></script>
+    </div>
+    <div id="form-input" data-role="page" data-theme="b">
+    	<div data-role="header" data-theme="a" data-position="fixed"
+    	data-id="topbar">
+    	<a data-role="button" data-icon="home" data-theme="b"
+    	data-iconpos="notext" data-direction="reverse" href="#menu-list" title="home"></a>
+    	<h3>Nuevo Paciente</h3>
+		    </div>
+		    <div data-role="content">
+		    	<h2>Bienvenido mo2013</h2>
+		    	<h3>Completa el Formulario</h3>
+		    	<form id="patientForm" onsubmit="javascript:submitPatient(this);return false;" method="post">
+		    		<input type="hidden" id="created" name="created">
+		    		<input type="hidden" id="author" name="author" value="androidUser">
+		    		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		    		data-expanded-icon="arrow-d" data-content-theme="b">
+		    		<div data-role="collapsible" data-collapsed="true">
+		    			<h3>Datos Filiatorios</h3>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="mhnum">Historia Clinica Nº</label> 
+		    					<input type="number" id="mhnum" name="personalDataMHNum" value="" required>
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="fname">Nombres</label> 
+		    					<input type="text" id="fname" name="personalDataFname" value="" required>
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="lname">Apellido</label> 
+		    					<input type="text" id="lname" name="personalDataLname" value="" required>
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="ssn">DNI</label> 
+		    					<input type="number" id="ssn" name="personalDataSSN" value="" required>
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="bday">Fecha de Nacimiento</label>
+		    					<input type="date" id="bday" name="personalDataBday" value="" required class="nativedatepicker" placeholder="YYYY-MM-DD">
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="age">Edad</label> 
+		    					<input type="number" id="age" name="personalDataAge" readonly="readonly" value="" min="0">
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<label for="gender" class="select">Sexo</label> 
+		    				<select id="gender" name="personalDataGender" value="" class="selectmenutrigger">
+		    					<option value="M">M</option>
+		    					<option value="F">F</option>
+		    				</select>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="address">Domicilio</label> 
+		    					<input type="text" id="address" name="personalDataAddress" value="">
+		    				</fieldset>
+		    			</div>
+		    			<div data-role="fieldcontain">
+		    				<fieldset data-role="controlgroup">
+		    					<label for="city">Localidad</label> 
+		    					<input type="text" id="city" name="personalDataCity" value="">
+		    				</fieldset>
+		    			</div>
+		    		</div>
+		    	</div>
+		    	<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		    	data-expanded-icon="arrow-d" data-content-theme="b">
+		    	<div data-role="collapsible" data-collapsed="true">
+		    		<h3>Antecedentes Paternos</h3>
+		    		<div data-role="fieldcontain">
+		    			<fieldset data-role="controlgroup">
+		    				<select name="fatherAlive"
+		    				onchange="javascript:toggleCOD(this,1);" value="" class="selectmenutrigger">
+		    				<option value="true">Vivo</option>
+		    				<option value="false">Fallecido</option>
+		    			</select>
+		    		</fieldset>
+		    	</div>
+		    	<div data-role="fieldcontain" id="div-cod-1">
+		    		<fieldset data-role="controlgroup">
+		    			<label for="cod1">Causa de Muerte</label> <input type="text"
+		    			id="cod1" name="fatherCOD" value="">
+		    		</fieldset>
+		    	</div>
+		    	<div data-role="fieldcontain" data-theme="c">
+		    		<fieldset data-role="controlgroup">
+		    			<label for="fatherDBT">DBT</label> <input type="checkbox"
+		    			id="fatherDBT" name="fatherDBT"> <label for="fatherHTA">HTA</label>
+		    			<input type="checkbox" id="fatherHTA" name="fatherHTA">
+		    			<label for="fatherDislipedemia">Dislipedemia</label> <input
+		    			type="checkbox" id="fatherDislipedemia"
+		    			name="fatherDislipedemia"> <label for="fatherChagas">Chagas</label>
+		    			<input type="checkbox" id="fatherChagas" name="fatherChagas">
+		    		</fieldset>
+		    	</div>
+		    	<div data-role="fieldcontain">
+		    		<fieldset data-role="controlgroup">
+		    			<label for="fatherThyroid">Tiroides</label> <input type="text"
+		    			id="fatherThyroid" name="fatherThyroid" value="">
+		    		</fieldset>
+		    	</div>
+		    	<div data-role="fieldcontain">
+		    		<fieldset data-role="controlgroup">
+		    			<label for="fatherOthers">Otros</label> <input type="text"
+		    			id="fatherOthers" name="fatherOthers" value="">
+		    		</fieldset>
+		    	</div>
+		    </div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Antecedentes Maternos</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<select name="motherAlive"
+					onchange="javascript:toggleCOD(this,2);" value="" class="selectmenutrigger">
+					<option value="true">Viva</option>
+					<option value="false">Fallecida</option>
+				</select>
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain" id="div-cod-2">
+			<fieldset data-role="controlgroup">
+				<label for="cod2">Causa de Muerte</label> <input type="text"
+				id="cod2" name="motherCOD" value="">
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain" data-theme="c">
+			<fieldset data-role="controlgroup">
+				<label for="motherDBT">DBT</label> <input type="checkbox"
+				id="motherDBT" name="motherDBT"> <label for="motherHTA">HTA</label>
+				<input type="checkbox" id="motherHTA" name="motherHTA">
+				<label for="motherDislipedemia">Dislipedemia</label> <input
+				type="checkbox" id="motherDislipedemia"
+				name="motherDislipedemia"> <label for="motherChagas">Chagas</label>
+				<input type="checkbox" id="motherChagas" name="motherChagas">
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<label for="motherThyroid">Tiroides</label> <input type="text"
+				id="motherThyroid" name="motherThyroid" value="">
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<label for="motherOthers">Otros</label> <input type="text"
+				id="motherOthers" name="motherOthers" value="">
+			</fieldset>
+		</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Antecedentes Personales</h3>
+			<div data-role="fieldcontain" data-theme="c">
+				<fieldset data-role="controlgroup">
+					<label for="personalMHDBT">DBT</label> <input type="checkbox"
+					id="personalMHDBT" name="personalMHDBT" checked=""> <label
+					for="personalMHHTA">HTA</label> <input type="checkbox"
+					id="personalMHHTA" name="personalMHHTA" checked=""> <label
+					for="personalMHDislipedemia">Dislipedemia</label> <input
+					type="checkbox" id="personalMHDislipedemia"
+					name="personalMHDislipedemia" checked=""> <label
+					for="personalMHChagas">Chagas</label> <input type="checkbox"
+					id="personalMHChagas" name="personalMHChagas" checked="">
+					<label for="personalMHArhythmia">Arritmias</label> <input
+					type="checkbox" id="personalMHArhythmia"
+					name="personalMHArhythmia" checked="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="personalMHThyroid">Tiroides</label> <input
+					type="text" id="personalMHThyroid" name="personalMHThyroid"
+					value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="personalMHOthers">Otros</label> <input type="text"
+					id="personalMHOthers" name="personalMHOthers" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="personalMHTreatment">Tratamientos</label> <select
+					name="personalMHTreatment" id="personalMHTreatment"
+					data-theme="a" data-role="slider"
+					onchange="javascript:toggleTreatment(this);" value="">
+					<option value="off">No</option>
+					<option value="on">Si</option>
+				</select>
+			</fieldset>
+			<fieldset data-role="controlgroup" id="div-treatdesc">
+				<label for="personalMHTreatDesc">Descripción del
+					Tratamiento</label> <input type="text" id="personalMHTreatDesc"
+					name="personalMHTreatDesc" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="smoking">Tabaquismo</label> <select
+					name="personalMHSmoking" id="smoking" data-theme="a"
+					data-role="slider" onchange="javascript:toggleTobacco(this);"
+					value="">
+					<option value="off">No</option>
+					<option value="on">Si</option>
+				</select>
+			</fieldset>
+			<fieldset data-role="controlgroup" id="div-tobacco-desc">
+				<label for="smokeDay">cigarrillos/dia</label> <input
+				type="number" id="smokeDay" name="personalMHSmokeDay"
+				placeholder="cig/dia" value=""> <label for="smokeYears">años</label>
+				<input type="number" id="smokeYears" name="personalMHSmokeYears"
+				placeholder="años" value=""> <label
+				for="smokeAbstinence">abstinencia</label> <input type="number"
+				id="smokeAbstinence" name="personalMHSmokeAbstinence"
+				placeholder="años" value="">
+			</fieldset>
+		</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Glicemia</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="glycsched">Horario de la toma</label> <input
+					type="text" id="glycsched" name="glycemiaSched" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="fasting">Ayunas</label>
+						</div>
+						<div class="ui-block-b">
+							<select name="glycemiaFasting" id="fasting" data-theme=""
+							data-role="slider" value="">
+							<option value="off">No</option>
+							<option value="on">Si</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<label for="glycval">Valor de glicemia</label> <input
+				type="number" id="glycval" name="glycemiaVal" min="0"
+				step="0.1" value="">
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<label for="lastmeal">Ultima Ingesta</label> <input type="text"
+				id="lastmeal" name="glycemiaLastmeal" value="">
+			</fieldset>
+		</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Actividad Física</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="recently">Actualmente</label>
+						</div>
+						<div class="ui-block-b">
+							<select name="physicalActRecently" id="recently"
+							data-theme="a" data-role="slider"
+							onchange="javascript:toggleActivity(this,'recently');"
+							value="">
+							<option value="off">No</option>
+							<option value="on">Si</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset data-role="controlgroup" id="div-recently-desc">
+				<div data-role="fieldcontain">
+					<label for="RecentlyLeisure">Esparcimiento</label> <input
+					type="checkbox" id="physicalActRecentlyLeisure"
+					name="physicalActRecentlyLeisure" placeholder="cig/dia"
+					value=""> <label for="RecentlyCompetitive">Competitivo</label>
+					<input type="checkbox" id="physicalActRecentlyCompetitive"
+					name="physicalActRecentlyCompetitive" placeholder="años"
+					value="">
+				</div>
+				<div data-role="fieldcontain">
+					<label for="recentlydesc">Cuál es la actividad?</label> <input
+					type="text" id="recentlydesc" name="physicalActRecentlyDesc"
+					value="">
+				</div>
+				<div data-role="fieldcontain">
+					<label for="recentlyfreq">frecuencia semanal</label> <input
+					type="number" id="recentlyfreq" name="physicalActRecentlyFreq"
+					placeholder="dias/semana" value="">
+				</div>
+				<div data-role="fieldcontain">
+					<label for="recentlyhours">Horas por vez</label> <input
+					type="number" id="recentlyhours"
+					name="physicalActRecentlyHours" placeholder="horas" value="">
+				</div>
+			</fieldset>
+			<hr>
+			<fieldset data-role="controlgroup">
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<label for="previous">Anteriormente</label>
+					</div>
+					<div class="ui-block-b">
+						<select name="physicalActPrevious" id="previous"
+						data-theme="a" data-role="slider"
+						onchange="javascript:toggleActivity(this,'previous');"
+						value="">
+						<option value="off">No</option>
+						<option value="on">Si</option>
+					</select>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset data-role="controlgroup" id="div-previous-desc">
+			<div data-role="fieldcontain">
+				<label for="PreviousLeisure">Esparcimiento</label> <input
+				type="checkbox" id="physicalActPreviousLeisure"
+				name="physicalActPreviousLeisure" placeholder="cig/dia"
+				value=""> <label for="competitive">Competitivo</label>
+				<input type="checkbox" id="physicalActPreviousCompetitive"
+				name="physicalActPreviousCompetitive" placeholder="años"
+				value="">
+			</div>
+			<div data-role="fieldcontain">
+				<label for="previousdesc">Cuál es la actividad?</label> <input
+				type="text" id="previousdesc" name="physicalActPreviousDesc"
+				value="">
+			</div>
+			<div data-role="fieldcontain">
+				<label for="previousdesc">De qué edad a qué edad?</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="number" id="previousAgeIni"
+						name="physicalActPreviousAgeIni" placeholder="desde"
+						value="">
+					</div>
+					<div class="ui-block-b">
+						<input type="number" id="previousAgeEnd"
+						name="physicalActPreviousAgeEnd" placeholder="hasta"
+						value="">
+					</div>
+				</div>
+			</div>
+			<div data-role="fieldcontain">
+				<label for="previousfreq">frecuencia semanal</label> <input
+				type="number" id="previousfreq" name="physicalActPreviousFreq"
+				placeholder="dias/semana" value="">
+			</div>
+			<div data-role="fieldcontain">
+				<label for="previoushours">Horas por vez</label> <input
+				type="number" id="previoushours"
+				name="physicalActPreviousHours" placeholder="horas" value="">
+			</div>
+		</fieldset>
+		</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Signos Vitales</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="pulse">Pulso</label>
+						</div>
+						<div class="ui-block-b">
+							<select name="vitalSignsPulse" id="vitalSignsPulse"
+							data-theme="a" data-role="slider" value="">
+							<option value="off">Regular</option>
+							<option value="on">Irregular</option>
+						</select>
+					</div>
+					<div data-role="fieldcontain"></div>
+				</div>
+			</fieldset>
+			<fieldset data-role="controlgroup">
+				<label for="freq">Frecuencia</label> <input type="text"
+				id="vitalSignsPulseFreq" name="vitalSignsPulseFreq" value="">
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="bloodPressure">Tension Arterial en mmHg</label>
+			<div class="ui-grid-a">
+				<div class="ui-block-a">
+					<input type="number" id="bloodPressureSist"
+					name="vitalSignsBloodPressureSistolic" placeholder="Sistólica"
+					value="">
+				</div>
+				<div class="ui-block-b">
+					<input type="number" id="bloodPressureDiast"
+					name="vitalSignsBloodPressureDiastolic"
+					placeholder="Diastólica" value="">
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Medidas Antropométricas</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="sizeNum">Talla</label> <input type="number"
+					id="sizeNum" name="measuresSizeNum" placeholder="m"
+					onchange="javascript:getIMC();" min="0" step="0.1" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="waist">Cintura</label> <input type="number"
+					id="waist" name="measuresWaist" placeholder="cm" min="0"
+					step="0.1" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="weight">Peso</label> <input type="number"
+					id="weight" name="measuresWeight" placeholder="kg"
+					onchange="javascript:getIMC();" min="0" step="0.1" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="imc">Indice Masa Corporal</label> <input
+					type="number" id="imc" name="measuresIMC" placeholder="kg/m2"
+					readonly="readonly" value="">
+				</fieldset>
+			</div>
+		</div>
+		</div>
+		<div data-role="collapsible-set" data-collapsed-icon="arrow-r"
+		data-expanded-icon="arrow-d" data-content-theme="b">
+		<div data-role="collapsible" data-collapsed="true">
+			<h3>Examen Físico</h3>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="inspection">Inspección</label> <input type="text"
+					id="inspection" name="physicalExamInspection" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<label for="heartAuscultation">Auscultación Cardíaca</label> <input
+					type="text" id="heartAuscultation"
+					name="physicalExamHeartAuscultation" value="">
+				</fieldset>
+			</div>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<label for="murmurs">Soplos</label>
+						</div>
+						<div class="ui-block-b">
+							<select name="physicalExamMurmurs" id="murmurs" data-theme="a"
+							data-role="slider"
+							onchange="javascript:toggleActivity(this,'murmurs');"
+							value="">
+							<option value="off">No</option>
+							<option value="on">Si</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset data-role="controlgroup" id="div-murmurs-desc">
+				<div data-role="fieldcontain">
+					<label for="murmursDesc">Descripción</label> <input type="text"
+					id="murmursDesc" name="physicalExamMurmursDesc"
+					placeholder="Describa el Soplo" value="">
+				</div>
+			</fieldset>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<label for="pulmonarAuscultation">Auscultación
+							Pulmonar</label>
+						</div>
+						<div class="ui-block-b">
+							<select name="physicalExamPulmonarAuscultation"
+							id="pulmonarAuscultation" data-theme="a" data-role="slider"
+							onchange="javascript:toggleActivity(this,'pulmonarAuscultation');"
+							value="">
+							<option value="off">Normal</option>
+							<option value="on">Hallazgo</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset data-role="controlgroup"
+			id="div-pulmonarAuscultation-desc">
+			<div data-role="fieldcontain">
+				<label for="pulmonarAuscultationDesc">Descripción</label> <input
+				type="text" id="pulmonarAuscultationDesc"
+				name="physicalExamPulmonarAuscultationDesc"
+				placeholder="Describa el Hallazgo" value="">
+			</div>
+		</fieldset>
+		</div>
+		</div>
+		</div>
+		<input type="reset" value="Vaciar" data-theme="a"> <input
+		type="submit" value="Guardar">
+		</form>
+		</div>
+		<div data-role="footer" data-theme="a" data-position="fixed"
+		data-id="menu">
+		<div data-role="navbar" role="navigation" data-iconpos="top">
+			<ul class="ui-grid-b">
+				<li class="ui-block-a"><a href="#form-input" data-icon="plus"
+					data-corners="false" data-shadow="false" data-iconshadow="true"
+					data-wrapperels="span" data-iconpos="top" data-theme="a"
+					data-inline="true" class="ui-btn-active ui-state-persist">Nuevo
+					Paciente</a></li>
+				<li class="ui-block-b"><a href="#form-query"
+				data-icon="search" data-corners="false" data-shadow="false"
+				data-iconshadow="true" data-wrapperels="span" data-iconpos="top"
+				data-theme="a" data-inline="true">Buscar Paciente</a></li>
+				<li class="ui-block-c"><a href="#stats" data-icon="info"
+					data-corners="false" data-shadow="false" data-iconshadow="true"
+					data-wrapperels="span" data-iconpos="top" data-theme="a"
+					data-inline="true">Estadísticas</a></li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript" src="js/form-input.js"></script>
+		<script type="text/javascript" src="js/datePickerPlugin.js"></script>
+	</div>
+	
+	
+
+	
+</body>
+</html>
