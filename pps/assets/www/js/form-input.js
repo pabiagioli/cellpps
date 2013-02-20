@@ -227,20 +227,20 @@ function populateForm(patient){
     (patient.fatherDBT == 1 )?$('[name="fatherDBT"]').attr('checked','checked'):$('[name="fatherDBT"]').removeAttr('checked');
     (patient.fatherHTA == 1 )?$('[name="fatherHTA"]').attr('checked','checked'):$('[name="fatherHTA"]').removeAttr('checked');
     (patient.fatherDislipedemia == 1 )?$('[name="fatherDislipedemia"]').attr('checked','checked'):$('[name="fatherDislipedemia"]').removeAttr('checked');
-    (patient.fatherThyroid == 1 )?$('[name="fatherThyroid"]').attr('checked','checked'):$('[name="fatherThyroid"]').removeAttr('checked');
+    $('[name="fatherThyroid"]').val(patient.fatherThyroid);
     (patient.fatherChagas == 1 )?$('[name="fatherChagas"]').attr('checked','checked'):$('[name="fatherChagas"]').removeAttr('checked');
     $('[name="fatherOthers"]').val(patient.fatherOthers);
     $('[name="motherAlive"]').val(patient.motherAlive); $('[name="motherfatherAlive"] option[value="'+patient.motherAlive+'"]').attr('selected', 'selected');// ('true' | 'false')
     (patient.motherDBT == 1 )?$('[name="motherDBT"]').attr('checked','checked'):$('[name="motherDBT"]').removeAttr('checked');
     (patient.motherHTA == 1 )?$('[name="motherHTA"]').attr('checked','checked'):$('[name="motherHTA"]').removeAttr('checked');
     (patient.motherDislipedemia == 1 )?$('[name="motherDislipedemia"]').attr('checked','checked'):$('[name="motherDislipedemia"]').removeAttr('checked');
-    (patient.motherThyroid == 1 )?$('[name="motherThyroid"]').attr('checked','checked'):$('[name="motherThyroid"]').removeAttr('checked');
+    $('[name="motherThyroid"]').val(patient.motherThyroid);
     (patient.motherChagas == 1 )?$('[name="motherChagas"]').attr('checked','checked'):$('[name="motherChagas"]').removeAttr('checked');
     $('[name="motherOthers"]').val(patient.motherOthers);
     (patient.personalMHDBT == 1 )?$('[name="personalMHDBT"]').attr('checked','checked'):$('[name="personalMHDBT"]').removeAttr('checked');
     (patient.personalMHHTA == 1 )?$('[name="personalMHHTA"]').attr('checked','checked'):$('[name="personalMHHTA"]').removeAttr('checked');
     (patient.personalMHDislipedemia == 1 )?$('[name="personalMHDislipedemia"]').attr('checked','checked'):$('[name="personalMHDislipedemia"]').removeAttr('checked');
-    (patient.personalMHThyroid == 1 )?$('[name="personalMHThyroid"]').attr('checked','checked'):$('[name="personalMHThyroid"]').removeAttr('checked');
+    $('[name="personalMHThyroid"]').val(patient.personalMHThyroid);
     (patient.personalMHChagas == 1 )?$('[name="personalMHChagas"]').attr('checked','checked'):$('[name="personalMHChagas"]').removeAttr('checked');
     (patient.personalMHArhythmia == 1 )?$('[name="personalMHArhythmia"]').attr('checked','checked'):$('[name="personalMHArhythmia"]').removeAttr('checked');
     $('[name="personalMHOthers"]').val(patient.personalMHOthers);
